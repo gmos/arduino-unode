@@ -22,20 +22,25 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  *******************************************************************************/
-#include "SystemConfig.hpp"
+#ifndef CHECKSUMS_H
+#define CHECKSUMS_H
 
 /**
- * Define the static variable
+ * crc4 - calculate the 4-bit crc of a value.
+ * @c:    starting crc4
+ * @x:    value to checksum
+ * @bits: number of bits in @x to checksum
+ *
+ * Returns the crc4 value of @x, using polynomial 0b10111.
+ *
+ * The @x value is treated as left-aligned, and bits above @bits are ignored
+ * in the crc calculations.
  */
-uNodeConfig system_config;
+uint8_t crc4(uint8_t c, uint32_t x, int bits);
 
 /**
- * Initializes the system configuration using various possible sources to
- * complete this task.
+ * crc16 - calculate the 16-bit crc of the given value
  */
-void __attribute__((weak)) system_config_setup() {
+uint16_t crc16(uint8_t* data, uint32_t len, uint16_t polynomial = 0x1021);
 
-  // The default implementation is to use the user-provided structure
-  memcpy(&system_config, &unode_config, sizeof(uNodeConfig));
-
-}
+#endif

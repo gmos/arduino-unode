@@ -29,9 +29,14 @@
 #include "PublicDefinitions.hpp"
 
 /**
+ * A general-purpose constant that the user can use for setting a default config
+ */
+#define  CONFIG_DEFAULT    0
+
+/**
  * The LoRA Configuration parameters
  */
-struct uNodeLoRAConfig {
+struct uNodeConfigLora {
 
   /**
    * LoRA mode
@@ -64,6 +69,16 @@ struct uNodeLoRAConfig {
   } activation;
 
   /**
+   * The spreading factor to use (default is LORA_SF7)
+   */
+  LORA_SPREADFACTOR_t tx_sf;
+
+  /**
+   * The transmission power to use (default is 14)
+   */
+  uint8_t             tx_power;
+
+  /**
    * When using managed transmission, this defines the number of seconds to wait
    * for a transmission acknowledgment before considering it timed out.
    */
@@ -75,6 +90,45 @@ struct uNodeLoRAConfig {
    */
   uint8_t             tx_retries;
 
+  /**
+   * Enable or disable Adaptive Data Rate (ADR) on the LoRa Chip
+   */
+  uint8_t             adr;
+
+};
+
+/**
+ * The LoRA Configuration parameters
+ */
+struct uNodeConfigUV {
+
+  /**
+   * Cut-off voltage (low)
+   */
+  uint16_t            disableThreshold;
+
+  /**
+   * Activation-off voltage (high)
+   */
+  uint16_t            enableThreshold;
+
+};
+
+/**
+ * Debug log structure
+ */
+struct uNodeConfigLogging {
+
+  /**
+   * The logging level
+   */
+  LOG_LEVEL_t  level;
+
+  /**
+   * Baud rate for the serial console
+   */
+  uint32_t      baud;
+
 };
 
 /**
@@ -85,17 +139,17 @@ struct uNodeConfig {
   /**
    * The LoRA Configuration
    */
-  uNodeLoRAConfig     lora;
-
-  /**
-   * Under-voltage protection (for LiPo Coin-Cell Batteries)
-   */
-  bool                undervoltageProtection;
+  uNodeConfigLora       lora;
 
   /**
    * Serial port debug level
    */
-  LOG_LEVEL_t         serialLogLevel;
+  uNodeConfigLogging    logging;
+
+  /**
+   * Under-voltage protection (for LiPo Coin-Cell Batteries)
+   */
+  uNodeConfigUV         undervoltageProtection;
 
 };
 
